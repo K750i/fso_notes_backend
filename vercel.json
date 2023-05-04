@@ -1,0 +1,9 @@
+{
+  "start": {
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": "$PORT"
+    },
+    "command": "node index.js"
+  }
+}
