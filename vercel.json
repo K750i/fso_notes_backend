@@ -1,9 +1,15 @@
 {
-  "start": {
-    "env": {
-      "NODE_ENV": "production",
-      "PORT": "$PORT"
-    },
-    "command": "node index.js"
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "./index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
 }
