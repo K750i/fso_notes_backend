@@ -6,8 +6,8 @@ const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PWD
 mongoose.set('strictQuery', false);
 mongoose
   .connect(uri)
-  .then(result => console.log('Connected to MongoDB'))
   .catch(console.log);
+mongoose.connection.on('connected', () => console.log('Connected to MongoDB'));
 
 const noteSchema = new mongoose.Schema({
   content: String,
