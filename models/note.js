@@ -10,7 +10,11 @@ mongoose
 mongoose.connection.on('connected', () => console.log('Connected to MongoDB'));
 
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    minLength: 5,
+    required: true
+  },
   important: Boolean,
 });
 

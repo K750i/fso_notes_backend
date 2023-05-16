@@ -47,19 +47,14 @@ app.delete('/api/notes/:id', (request, response, next) => {
     .catch(next);
 });
 
-app.post('/api/notes', (request, response) => {
-  if (!request.body.content) {
-    return response.status(400).json({
-      error: 'content missing'
-    });
-  }
-
+app.post('/api/notes', (request, response, next) => {
   const { content, important = false } = request.body;
   const newNote = { content, important };
 
   Note
     .create(newNote)
-    .then(res => response.json(newNote));
+    .then(res => response.json(newNote))
+    .catch(next);
 });
 
 app.put('/api/notes/:id', (request, response, next) => {
@@ -69,7 +64,11 @@ app.put('/api/notes/:id', (request, response, next) => {
   };
 
   Note
-    .findByIdAndUpdate(request.params.id, note, { new: true })
+    .findByIdAndUpdate(
+      request.params.id,
+      note,
+      { new: true, runValidators: true, context: 'query' }
+    )
     .then(updatedNote => response.json(updatedNote))
     .catch(next);
 });
@@ -85,6 +84,10 @@ app.use((error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' });
+  }
+
+  if (error.name === 'ValidationError') {
+    return response.status(400).send({ error: error.message });
   }
 
   next(error);
