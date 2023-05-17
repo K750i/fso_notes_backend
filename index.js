@@ -53,7 +53,7 @@ app.post('/api/notes', (request, response, next) => {
 
   Note
     .create(newNote)
-    .then(res => response.json(newNote))
+    .then(() => response.json(newNote))
     .catch(next);
 });
 
