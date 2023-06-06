@@ -19,6 +19,14 @@ exports.errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: error.message });
   }
 
+  if (error.name === 'JsonWebTokenError') {
+    return response.status(401).send({ error: 'invalid token' });
+  }
+
+  if (error.name === 'TokenExpiredError') {
+    return response.status(401).send({ error: 'token expired' });
+  }
+
   next(error);
 };
 
